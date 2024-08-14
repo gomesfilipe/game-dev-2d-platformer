@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheckPosition;  // posicao do obj usado para ground check
 
     private Rigidbody2D rb;
+    private Animator animator;
 
     bool facingRight = true;
 
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     bool IsGrounded()
@@ -52,13 +54,20 @@ public class PlayerController : MonoBehaviour
         float vy = rb.velocity.y;  // not changed
         rb.velocity = new Vector2(vx, vy);
 
+        animator.SetFloat("speed", Mathf.Abs(vx));
+
         if ((vx > 0 && !facingRight) || (vx < 0 && facingRight))
         {
             facingRight = !facingRight;
             transform.Rotate(0f, 180f, 0f);
         }
 
-        if (IsGrounded() && Input.GetButtonDown("Jump"))
+        bool isGrounded = IsGrounded();
+
+        animator.SetBool("isJumping", !isGrounded);
+        // animator.SetBool("isJumping", false);
+
+        if (isGrounded && Input.GetButtonDown("Jump"))
             rb.AddForce(transform.up * JUMP_FORCE);
 
         if (Input.GetButtonDown("Fire1"))
