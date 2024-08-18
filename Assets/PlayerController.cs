@@ -12,7 +12,10 @@ public class PlayerController : MonoBehaviour
 
     // os itens abaixo serao definidos no editor
     public LayerMask jumpableLayers;  // layers sobre os quais o personagem pode saltar
+    public LayerMask enemyLayers;  // layers dos inimigos
     public Transform groundCheckPosition;  // posicao do obj usado para ground check
+    public Transform attackPoint;
+    public float attackRange = 0.5f;
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -71,15 +74,31 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(transform.up * JUMP_FORCE);
 
         if (Input.GetButtonDown("Fire1"))
-            Instantiate(projectilePrefab,
-                        gameObject.transform.position,
-                        gameObject.transform.rotation);
+            Attack();
+            //Instantiate(projectilePrefab,
+            //            gameObject.transform.position,
+            //            gameObject.transform.rotation);
 
         if (Input.GetButtonDown("Fire2"))
         {
             Instantiate(laserPrefab,
                         gameObject.transform.position,
                         gameObject.transform.rotation);
+        }
+    }
+
+    void Attack()
+    {
+        animator.SetTrigger("Attack");
+
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(
+            attackPoint.position,
+            attackRange,
+            enemyLayers);
+
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            enemy.GetComponent<Enemy>().TakeDamage(1);
         }
     }
 }
