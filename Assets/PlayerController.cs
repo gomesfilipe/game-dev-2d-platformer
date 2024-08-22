@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float MOVEMENT_SPEED = 10.0f;
-    public float JUMP_FORCE = 800.0f;
+    public float JUMP_FORCE = 620.0f;
 
     // radio do circulo para determinar se o personagem está no chão
     float GROUND_CHECK_RADIUS = .2f;
