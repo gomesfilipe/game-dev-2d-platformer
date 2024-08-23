@@ -122,6 +122,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &75199657
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 75199658}
+  m_Layer: 7
+  m_Name: itemCollectPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &75199658
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75199657}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.006, y: -0.081, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 799537231}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &185136603
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,10 +265,15 @@ MonoBehaviour:
     m_Bits: 55
   enemyLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
+  itemsLayers:
+    serializedVersion: 2
+    m_Bits: 256
   groundCheckPosition: {fileID: 839873022}
   attackPoint: {fileID: 1789229245}
+  itemCollectPoint: {fileID: 75199658}
   attackRange: 0.5
+  itemCollectRange: 2
   projectilePrefab: {fileID: 371806660812642849, guid: e18bc07b6a4dde940b261e1b38532675, type: 3}
   laserPrefab: {fileID: 2242792887891152183, guid: 58944ba8a9975a8479e938efe308c6e4, type: 3}
 --- !u!61 &799537228
@@ -379,6 +415,7 @@ Transform:
   m_Children:
   - {fileID: 839873022}
   - {fileID: 1789229245}
+  - {fileID: 75199658}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &839873021

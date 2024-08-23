@@ -13,12 +13,17 @@ public class PlayerController : MonoBehaviour
     // os itens abaixo serao definidos no editor
     public LayerMask jumpableLayers;  // layers sobre os quais o personagem pode saltar
     public LayerMask enemyLayers;  // layers dos inimigos
+    public LayerMask itemsLayers;  // layers dos itens
     public Transform groundCheckPosition;  // posicao do obj usado para ground check
     public Transform attackPoint;
+    public Transform itemCollectPoint;
     public float attackRange = 0.5f;
+    public float itemCollectRange = 0.5f;
 
     private Rigidbody2D rb;
     private Animator animator;
+
+    private int collectedItems = 0;
 
     bool facingRight = true;
 
@@ -85,6 +90,21 @@ public class PlayerController : MonoBehaviour
                         gameObject.transform.position,
                         gameObject.transform.rotation);
         }
+
+        // busca todos os itens com colisao abaixo do personagem
+        Collider2D[] itemsColliders = Physics2D.OverlapCircleAll(
+            itemCollectPoint.position,
+            itemCollectRange,
+            itemsLayers);
+
+        collectedItems += itemsColliders.Length;
+
+        foreach (Collider2D itemCollider in itemsColliders)
+        {
+            Destroy(itemCollider.gameObject);
+        }
+
+        Debug.Log("Collected items: " + collectedItems);
     }
 
     void Attack()
