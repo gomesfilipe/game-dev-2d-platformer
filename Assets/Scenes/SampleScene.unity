@@ -132,7 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 60902564}
   - component: {fileID: 60902565}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: eye1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,6 +206,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &311906323
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 311906324}
+  m_Layer: 7
+  m_Name: attackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &311906324
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 311906323}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.144, y: -0.136, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1414700586}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,7 +500,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1387171944}
   - component: {fileID: 1387171945}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: eye1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -630,6 +661,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1146803017}
+  - {fileID: 311906324}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &1414700587
@@ -721,7 +753,12 @@ MonoBehaviour:
   jumpableLayers:
     serializedVersion: 2
     m_Bits: 55
+  enemyLayers:
+    serializedVersion: 2
+    m_Bits: 64
   groundCheckPosition: {fileID: 1146803017}
+  attackPoint: {fileID: 311906324}
+  attackRange: 0.5
   projectilePrefab: {fileID: 371806660812642849, guid: e18bc07b6a4dde940b261e1b38532675, type: 3}
   laserPrefab: {fileID: 2242792887891152183, guid: 58944ba8a9975a8479e938efe308c6e4, type: 3}
 --- !u!95 &1414700590
@@ -1232,7 +1269,7 @@ GameObject:
   - component: {fileID: 1738836852}
   - component: {fileID: 1738836851}
   - component: {fileID: 1738836855}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1571,7 +1608,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1941483762}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: groundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
