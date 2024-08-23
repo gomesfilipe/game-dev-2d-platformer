@@ -14,9 +14,9 @@ TagManager:
   - Enemy
   - Player
   - Items
-  - 
-  - 
-  - 
+  - Platform
+  - Ground
+  - Goal
   - 
   - 
   - 

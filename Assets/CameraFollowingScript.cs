@@ -6,12 +6,11 @@ public class CameraFollowingScript : MonoBehaviour
 {
     public GameObject target;
 
+    public float smoothSpeed = 0.125f;
+    public Vector3 offset;
+
     void LateUpdate()
     {
-        transform.position = new Vector3(
-            target.transform.position.x,
-            target.transform.position.y + 2f,
-            transform.position.z
-        );
+        transform.position = target.transform.position + offset;
     }
 }

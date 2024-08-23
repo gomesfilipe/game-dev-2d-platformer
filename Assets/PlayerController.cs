@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     public float MOVEMENT_SPEED = 10.0f;
     public float JUMP_FORCE = 620.0f;
+    public float PROPULSION_FORCE = 1000.0f;
 
     // radio do circulo para determinar se o personagem está no chão
     float GROUND_CHECK_RADIUS = .2f;
@@ -14,11 +16,14 @@ public class PlayerController : MonoBehaviour
     public LayerMask jumpableLayers;  // layers sobre os quais o personagem pode saltar
     public LayerMask enemyLayers;  // layers dos inimigos
     public LayerMask itemsLayers;  // layers dos itens
+    public LayerMask propulsionLayers;
     public Transform groundCheckPosition;  // posicao do obj usado para ground check
     public Transform attackPoint;
     public Transform itemCollectPoint;
     public float attackRange = 0.5f;
     public float itemCollectRange = 0.5f;
+
+    public float propulsionDelay = 1.0f;
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -30,10 +35,14 @@ public class PlayerController : MonoBehaviour
     public GameObject projectilePrefab;
     public GameObject laserPrefab;
 
+    private float lastTimePropulsion;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        lastTimePropulsion = Time.time;
     }
 
     bool IsGrounded()
@@ -84,12 +93,12 @@ public class PlayerController : MonoBehaviour
             //            gameObject.transform.position,
             //            gameObject.transform.rotation);
 
-        if (Input.GetButtonDown("Fire2"))
-        {
-            Instantiate(laserPrefab,
-                        gameObject.transform.position,
-                        gameObject.transform.rotation);
-        }
+        //if (Input.GetButtonDown("Fire2"))
+        //{
+        //    Instantiate(laserPrefab,
+        //                gameObject.transform.position,
+        //                gameObject.transform.rotation);
+        //}
 
         // busca todos os itens com colisao abaixo do personagem
         Collider2D[] itemsColliders = Physics2D.OverlapCircleAll(
@@ -105,6 +114,16 @@ public class PlayerController : MonoBehaviour
         }
 
         Debug.Log("Collected items: " + collectedItems);
+
+        // Checks propulsion
+        if (rb.IsTouchingLayers(propulsionLayers))
+        {
+            if (Time.time - lastTimePropulsion > propulsionDelay)
+            {
+                lastTimePropulsion = Time.time;
+                rb.AddForce(transform.up * PROPULSION_FORCE);
+            }
+        }
     }
 
     void Attack()

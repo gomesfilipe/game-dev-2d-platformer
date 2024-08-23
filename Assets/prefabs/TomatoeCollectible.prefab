@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5497136986600938537}
   - component: {fileID: 8798127184497067575}
   - component: {fileID: 5975136123784318725}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TomatoeCollectible
   m_TagString: Untagged
   m_Icon: {fileID: 0}
