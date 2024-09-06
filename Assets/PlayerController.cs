@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     public float MOVEMENT_SPEED = 10.0f;
     public float JUMP_FORCE = 620.0f;
-    public float PROPULSION_FORCE = 1000.0f;
+    public float PROPULSION_FORCE = 3.0f;
 
     // radio do circulo para determinar se o personagem está no chão
     float GROUND_CHECK_RADIUS = .2f;
@@ -57,8 +57,9 @@ public class PlayerController : MonoBehaviour
         // personsagem, o personagem esta' no chao.
 		for (int i = 0; i < colliders.Length; i++)
 		{
-			if (colliders[i].gameObject != gameObject)
+			if (colliders[i].gameObject != gameObject) {
 				return true;
+            }
 		}
 
         return false;
@@ -68,7 +69,11 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         float vx = Input.GetAxisRaw("Horizontal") * MOVEMENT_SPEED;
-        float vy = rb.velocity.y;  // not changed
+        
+        float vy = rb.IsTouchingLayers(propulsionLayers)
+            ? PROPULSION_FORCE
+            : rb.velocity.y;
+
         rb.velocity = new Vector2(vx, vy);
 
         animator.SetFloat("speed", Mathf.Abs(vx));
@@ -113,17 +118,8 @@ public class PlayerController : MonoBehaviour
             Destroy(itemCollider.gameObject);
         }
 
-        Debug.Log("Collected items: " + collectedItems);
+        // Debug.Log("Collected items: " + collectedItems);
 
-        // Checks propulsion
-        if (rb.IsTouchingLayers(propulsionLayers))
-        {
-            if (Time.time - lastTimePropulsion > propulsionDelay)
-            {
-                lastTimePropulsion = Time.time;
-                rb.AddForce(transform.up * PROPULSION_FORCE);
-            }
-        }
     }
 
     void Attack()
