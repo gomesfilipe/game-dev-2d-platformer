@@ -35,10 +35,15 @@ public class PlayerController : MonoBehaviour
     public GameObject projectilePrefab;
     public GameObject laserPrefab;
 
+    private CanvasController canvasControllerPlayer;
+
     private float lastTimePropulsion;
 
     void Start()
     {
+        canvasControllerPlayer = CanvasController.canvasController;
+        canvasControllerPlayer.score = 0;
+
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
@@ -115,6 +120,9 @@ public class PlayerController : MonoBehaviour
 
         foreach (Collider2D itemCollider in itemsColliders)
         {
+            canvasControllerPlayer.score++;
+            canvasControllerPlayer.scoreText.text = canvasControllerPlayer.score.ToString();
+
             Destroy(itemCollider.gameObject);
         }
 
