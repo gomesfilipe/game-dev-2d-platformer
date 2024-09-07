@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
 
     private int collectedItems = 0;
+    private int itemsToCollect = 9999;
 
     bool facingRight = true;
 
@@ -43,6 +44,16 @@ public class PlayerController : MonoBehaviour
     {
         canvasControllerPlayer = CanvasController.canvasController;
         canvasControllerPlayer.score = 0;
+
+
+        Collider2D[] itemsColliders = Physics2D.OverlapCircleAll(
+           itemCollectPoint.position,
+           int.MaxValue,
+           itemsLayers);
+
+        itemsToCollect = itemsColliders.Length;
+
+        canvasControllerPlayer.scoreText.text = canvasControllerPlayer.score.ToString() + " / " + itemsToCollect.ToString();
 
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -75,7 +86,7 @@ public class PlayerController : MonoBehaviour
     {
         float vx = Input.GetAxisRaw("Horizontal") * MOVEMENT_SPEED;
         
-        float vy = rb.IsTouchingLayers(propulsionLayers)
+        float vy = (rb.IsTouchingLayers(propulsionLayers) && (collectedItems >= itemsToCollect))
             ? PROPULSION_FORCE
             : rb.velocity.y;
 
@@ -121,7 +132,7 @@ public class PlayerController : MonoBehaviour
         foreach (Collider2D itemCollider in itemsColliders)
         {
             canvasControllerPlayer.score++;
-            canvasControllerPlayer.scoreText.text = canvasControllerPlayer.score.ToString();
+            canvasControllerPlayer.scoreText.text = canvasControllerPlayer.score.ToString() + " / " + itemsToCollect.ToString();
 
             Destroy(itemCollider.gameObject);
         }
