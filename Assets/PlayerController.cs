@@ -5,8 +5,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float MOVEMENT_SPEED = 10.0f;
+    public float BASE_MOVEMENT_SPEED = 10.0f;
+
+    float MOVEMENT_SPEED = 10.0f;
     public float JUMP_FORCE = 620.0f;
+
+    public float SUPER_JUMP_POWER_FORCE = 100.0f;
     public float PROPULSION_FORCE = 3.0f;
 
     // radio do circulo para determinar se o personagem está no chão
@@ -16,6 +20,8 @@ public class PlayerController : MonoBehaviour
     public LayerMask jumpableLayers;  // layers sobre os quais o personagem pode saltar
     public LayerMask enemyLayers;  // layers dos inimigos
     public LayerMask itemsLayers;  // layers dos itens
+
+    public LayerMask jumpSuperPowerLayers;
     public LayerMask propulsionLayers;
     public Transform groundCheckPosition;  // posicao do obj usado para ground check
     public Transform attackPoint;
@@ -42,7 +48,10 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        MOVEMENT_SPEED = BASE_MOVEMENT_SPEED;
+        
         canvasControllerPlayer = CanvasController.canvasController;
+        Debug.Log(canvasControllerPlayer);
         canvasControllerPlayer.score = 0;
 
 
@@ -105,6 +114,9 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isJumping", !isGrounded);
         // animator.SetBool("isJumping", false);
 
+        if (isGrounded)
+            MOVEMENT_SPEED = BASE_MOVEMENT_SPEED;
+
         if (isGrounded && Input.GetButtonDown("Jump"))
             rb.AddForce(transform.up * JUMP_FORCE);
 
@@ -138,6 +150,21 @@ public class PlayerController : MonoBehaviour
         }
 
         // Debug.Log("Collected items: " + collectedItems);
+        SuperJumpPower();
+    }
+
+    void SuperJumpPower()
+    {
+        Collider2D[] superJumpPowerColliders = Physics2D.OverlapCircleAll(
+            itemCollectPoint.position,
+            itemCollectRange,
+            jumpSuperPowerLayers);
+
+        foreach (Collider2D superJumpPowerCollider in superJumpPowerColliders)
+        {            
+            rb.AddForce(transform.up * SUPER_JUMP_POWER_FORCE);
+            MOVEMENT_SPEED = 20.0f;
+        }
 
     }
 

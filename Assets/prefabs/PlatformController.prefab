@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8239098307703171066}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: End
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 2468816918539385085}
   - component: {fileID: 3829953031129589437}
   - component: {fileID: 4413868984712281399}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: RightPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3784366075073747873}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Start
   m_TagString: Untagged
   m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 4095833389451002623}
   - component: {fileID: 9221717638091023625}
   - component: {fileID: 6835988997475781317}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: MiddlePlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -333,7 +333,7 @@ GameObject:
   - component: {fileID: 185343043021716976}
   - component: {fileID: 1025008502285718198}
   - component: {fileID: 7361732361492426283}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: LeftPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -463,7 +463,7 @@ GameObject:
   - component: {fileID: 1396837723587340757}
   - component: {fileID: 8719203308485384981}
   - component: {fileID: 4394508937338145358}
-  m_Layer: 9
+  m_Layer: 12
   m_Name: PlatformController
   m_TagString: Untagged
   m_Icon: {fileID: 0}

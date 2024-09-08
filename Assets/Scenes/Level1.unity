@@ -1061,7 +1061,7 @@ MonoBehaviour:
   PROPULSION_FORCE: 3
   jumpableLayers:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 5632
   enemyLayers:
     serializedVersion: 2
     m_Bits: 64

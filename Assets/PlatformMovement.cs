@@ -40,10 +40,6 @@ public class NewBehaviourScript : MonoBehaviour
         middlePlatform.position = Vector2.MoveTowards(middlePlatform.position, target, speed * Time.deltaTime);
         leftPlatform.position = new Vector2(middlePlatform.position.x - 1, middlePlatform.position.y);
         rightPlatform.position = new Vector2(middlePlatform.position.x + 1, middlePlatform.position.y);
-        
-        // foreach (Transform platform in platforms) {
-        //     platform.position = Vector2.MoveTowards(platform.position, target, speed * Time.deltaTime);
-        // }
     }
 
     bool ShouldChangeDirection()
