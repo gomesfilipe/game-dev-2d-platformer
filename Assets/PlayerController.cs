@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     public float PROPULSION_FORCE = 3.0f;
 
     // radio do circulo para determinar se o personagem está no chão
-    float GROUND_CHECK_RADIUS = .2f;
+    float GROUND_CHECK_RADIUS = .3f;
 
     // os itens abaixo serao definidos no editor
     public LayerMask jumpableLayers;  // layers sobre os quais o personagem pode saltar
@@ -71,14 +71,8 @@ public class PlayerController : MonoBehaviour
 
         // se pelo menos uma colisao nao eh com o proprio
         // personsagem, o personagem esta' no chao.
-		for (int i = 0; i < colliders.Length; i++)
-		{
-			if (colliders[i].gameObject != gameObject) {
-				return true;
-            }
-		}
-
-        return false;
+		
+        return colliders.Length > 0;
     }
 
     // Update is called once per frame
