@@ -46,10 +46,17 @@ public class PlayerController : MonoBehaviour
 
     private float lastTimePropulsion;
 
+    public int maxHealth = 100;
+    public int currentHealth;
+    public HealthBar healthBar; 
+
     void Start()
     {
         MOVEMENT_SPEED = BASE_MOVEMENT_SPEED;
-        
+
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
+
         canvasControllerPlayer = CanvasController.canvasController;
         Debug.Log(canvasControllerPlayer);
         canvasControllerPlayer.score = 0;
@@ -175,6 +182,12 @@ public class PlayerController : MonoBehaviour
         {
             enemy.GetComponent<Enemy>().TakeDamage(1);
         }
+    }
+
+    public void TakeDamege(int damage)
+    {
+        currentHealth -= damage;
+        healthBar.SetHealth(currentHealth);
     }
 }
 
