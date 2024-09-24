@@ -14,18 +14,23 @@ public class Enemy : MonoBehaviour
     {
         health -= val;
 
+        animator.ResetTrigger("hit");
         animator.SetTrigger("hit");
 
         if (health == 0)
         {
             Die();
         }
+        else
+        {
+            animator.SetBool("isDead", false);
+        }
     }
 
     void Die()
     {
         animator.SetBool("isDead", true);
-        animator.SetTrigger("deathAnim");
+        //animator.SetTrigger("deathAnim");
         //Invoke("EraseEnemy", deathDelay);
         EraseEnemy();
     }
@@ -35,5 +40,6 @@ public class Enemy : MonoBehaviour
         Debug.Log("Enemy is dead");
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
+        //GetComponent<Rigidbody2D>().simulated = false;
     }
 }
