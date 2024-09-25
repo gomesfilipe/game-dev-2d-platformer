@@ -277,6 +277,7 @@ GameObject:
   - component: {fileID: 228551654}
   - component: {fileID: 228551661}
   - component: {fileID: 228551660}
+  - component: {fileID: 228551662}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
@@ -317,7 +318,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec3f2a57913804743a3b7f2dd6524ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aiPath: {fileID: 228551660}
   animator: {fileID: 228551654}
+  groundCheckPosition: {fileID: 745990445}
+  jumpableLayers:
+    serializedVersion: 2
+    m_Bits: 5632
   health: 10
   deathDelay: 1
 --- !u!61 &228551656
@@ -487,7 +493,7 @@ MonoBehaviour:
   repathRateCompatibility: NaN
   canSearchCompability: 0
   orientation: 1
-  enableRotation: 1
+  enableRotation: 0
   autoRepath:
     mode: 2
     interval: 0.5
@@ -532,6 +538,20 @@ MonoBehaviour:
   tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   graphMask:
     value: -1
+--- !u!114 &228551662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 228551653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9679e68a0f1144e79c664d9a11ca121, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1
+  target: {fileID: 799537231}
 --- !u!1001 &250708368
 PrefabInstance:
   m_ObjectHideFlags: 0

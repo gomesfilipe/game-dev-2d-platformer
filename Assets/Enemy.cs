@@ -1,14 +1,48 @@
+using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public AIPath aiPath;
     public Animator animator;
+    public Transform groundCheckPosition;
+    public LayerMask jumpableLayers;  // layers sobre os quais o personagem pode saltar
 
     public float health = 10f;
 
     public int deathDelay = 3;
+
+    float GROUND_CHECK_RADIUS = .1f;
+    bool facingRight = true;
+
+    bool isGrounded()
+    {
+        // busca todos os itens com colisao abaixo do personagem
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(
+            groundCheckPosition.position,
+            GROUND_CHECK_RADIUS,
+            jumpableLayers);
+
+        // se pelo menos uma colisao nao eh com o proprio
+        // personsagem, o personagem esta' no chao.
+
+        return colliders.Length > 0;
+    }
+
+    private void Update()
+    {
+        animator.SetFloat("speed", Mathf.Abs(aiPath.desiredVelocity.x));
+
+        if ((aiPath.desiredVelocity.x > 0 && !facingRight) || (aiPath.desiredVelocity.x < 0 && facingRight))
+        {
+            facingRight = !facingRight;
+            transform.Rotate(0f, 180f, 0f);
+        }
+
+        animator.SetBool("isJumping", !isGrounded()); 
+    }
 
     public void TakeDamage(float val)
     {
