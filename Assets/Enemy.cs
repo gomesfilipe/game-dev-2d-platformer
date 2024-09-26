@@ -1,11 +1,9 @@
-using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public AIPath aiPath;
     public Animator animator;
     public Transform groundCheckPosition;
     public LayerMask jumpableLayers;  // layers sobre os quais o personagem pode saltar
@@ -33,13 +31,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        animator.SetFloat("speed", Mathf.Abs(aiPath.desiredVelocity.x));
-
-        if ((aiPath.desiredVelocity.x > 0 && !facingRight) || (aiPath.desiredVelocity.x < 0 && facingRight))
-        {
-            facingRight = !facingRight;
-            transform.Rotate(0f, 180f, 0f);
-        }
+        //animator.SetFloat("speed", Mathf.Abs(aiPath.desiredVelocity.x));
 
         animator.SetBool("isJumping", !isGrounded()); 
     }
