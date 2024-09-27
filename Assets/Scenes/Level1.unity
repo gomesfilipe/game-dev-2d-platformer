@@ -315,6 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec3f2a57913804743a3b7f2dd6524ba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  triggerArea: {fileID: 1233175548}
   animator: {fileID: 228551654}
   groundCheckPosition: {fileID: 745990445}
   rayCast: {fileID: 1378103166}

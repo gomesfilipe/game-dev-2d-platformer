@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public BoxCollider2D triggerArea;
     public Animator animator;
     public Transform groundCheckPosition;
     public Transform rayCast;
@@ -56,11 +57,12 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Update()
+    void Update()
     {
         if (inRange)
         {
-            hit = Physics2D.Raycast(rayCast.position, transform.right, rayCastLength, raycastMask);
+            hit = Physics2D.Raycast(rayCast.position, Vector2.right, rayCastLength, raycastMask);
+            //hit = Physics2D.Raycast(rayCast.position, transform.right, rayCastLength, raycastMask);
             RaycastDebugger();
         }
 
@@ -113,6 +115,8 @@ public class Enemy : MonoBehaviour
         {
             Vector2 targetPosition = new Vector2(target.transform.position.x, transform.position.y);
 
+            //rb.velocity = new Vector2((targetPosition.x - transform.position.x) > 0 ? moveSpeed : -moveSpeed, rb.velocity.y);
+
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
         }
 
@@ -150,10 +154,14 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision == triggerArea)
         {
-            target = collision.gameObject;
-            inRange = true;
+            if (collision.gameObject.tag == "Player")
+            {
+                Debug.Log("Player entrou no Trigger do meu Collider específico!");
+                target = collision.gameObject;
+                inRange = true;
+            }
         }
     }
 
