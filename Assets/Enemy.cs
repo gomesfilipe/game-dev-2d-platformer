@@ -31,10 +31,13 @@ public class Enemy : MonoBehaviour
     private GameObject target;
     private float distance; // Distance between enemy and player
     private float intTimer;
+    private float directionChangeTimer = 0f; // The time at which the last direction change has occurred at patrol
+    private float directionChangeTheshold = 0.5f; // The threshold at which the direction change occurs at patrol
     private bool attackMode;
     private bool inRange; // Check if Player is in range
     private bool cooling;
     private Rigidbody2D rb;
+    private Vector2 targetPositionPatrol;
 
     bool isGrounded()
     {
@@ -58,6 +61,9 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        // Pega o ponto mais longe
+        targetPositionPatrol = Vector2.Distance(transform.position, pointA.position) < Vector2.Distance(transform.position, pointB.position) ? pointB.position : pointA.position;
     }
 
     void FixedUpdate()
@@ -88,8 +94,8 @@ public class Enemy : MonoBehaviour
 
         if (!inRange)
         {
-            rb.velocity = new Vector2(0, rb.velocity.y);
-            //MoveBetweenPointAAndPointB();
+            //rb.velocity = new Vector2(0, rb.velocity.y);
+            MoveBetweenPointAAndPointB();
             StopAttack();
         }
 
@@ -110,29 +116,39 @@ public class Enemy : MonoBehaviour
 
     void MoveBetweenPointAAndPointB()
     {
-        Debug.Log("Ta entrando aqui");
-        Transform leftPoint = pointA.position.x < pointB.position.x ? pointA : pointB;
-        Transform rightPoint = pointA.position.x >= pointB.position.x ? pointA : pointB;
+        directionChangeTimer -= Time.deltaTime;
 
-        // A direita do rightPoint
-        if (transform.position.x > rightPoint.position.x)
+        if (Mathf.Abs(transform.position.x - targetPositionPatrol.x) < 0.01 && directionChangeTimer < directionChangeTheshold)
         {
-            rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
+            Debug.Log("Trocou de direcao " + directionChangeTimer);
 
+            directionChangeTimer = directionChangeTheshold + 1f;
+            //targetPositionPatrol = targetPositionPatrol == new Vector2(pointA.position.x, pointA.position.y) ? pointB.position : pointA.position;
+            targetPositionPatrol = Vector2.Distance(transform.position, pointA.position) < Vector2.Distance(transform.position, pointB.position) ? pointB.position : pointA.position;
+        }
+
+        float desirable_speed;
+
+        // Se move pra esquerda
+        if (transform.position.x > targetPositionPatrol.x)
+        {
+            desirable_speed = -moveSpeed;
             if (facingRight)
             {
                 Flip();
             }
-        } // A esquerda do leftPoint
-        else if (transform.position.x < leftPoint.position.x && !facingRight)
+        }
+        // Se move pra direita
+        else
         {
-            rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
-
+            desirable_speed = moveSpeed;
             if (!facingRight)
             {
                 Flip();
             }
         }
+
+        rb.velocity = new Vector2(desirable_speed, rb.velocity.y);
     }
 
     void EnemyLogic()
