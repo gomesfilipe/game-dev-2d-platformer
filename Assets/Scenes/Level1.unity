@@ -326,8 +326,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 5632
   rayCastLength: 6
-  attackDistance: 2
-  moveSpeed: 18.23
+  attackDistance: 1.5
+  moveSpeed: 2
   timer: 3
   enemyAttackAnimationName: Bear_Attack
   health: 10

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -59,10 +60,20 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        bool isTouchingPlayer = triggerArea.IsTouchingLayers(LayerMask.GetMask("Player"));
+
+        if (isTouchingPlayer)
+        {
+            Debug.Log("Player entrou no Trigger do meu Collider!");
+            target = GameObject.Find("Player");
+            inRange = true;
+        }
+
+
         if (inRange)
         {
-            hit = Physics2D.Raycast(rayCast.position, Vector2.right, rayCastLength, raycastMask);
-            //hit = Physics2D.Raycast(rayCast.position, transform.right, rayCastLength, raycastMask);
+            //hit = Physics2D.Raycast(rayCast.position, Vector2.right, rayCastLength, raycastMask);
+            hit = Physics2D.Raycast(rayCast.position, transform.right, rayCastLength, raycastMask);
             RaycastDebugger();
         }
 
@@ -98,6 +109,7 @@ public class Enemy : MonoBehaviour
         else if (attackDistance >= distance && cooling == false)
         {
             Attack();
+            rb.velocity = new Vector2(0f, 0f);
         }
 
         if (cooling)
@@ -115,9 +127,9 @@ public class Enemy : MonoBehaviour
         {
             Vector2 targetPosition = new Vector2(target.transform.position.x, transform.position.y);
 
-            //rb.velocity = new Vector2((targetPosition.x - transform.position.x) > 0 ? moveSpeed : -moveSpeed, rb.velocity.y);
+            rb.velocity = new Vector2((targetPosition.x - transform.position.x) > 0 ? moveSpeed : -moveSpeed, rb.velocity.y);
 
-            transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            //transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
         }
 
         if (transform.position.x > target.transform.position.x && facingRight)
@@ -140,6 +152,7 @@ public class Enemy : MonoBehaviour
     {
         timer = intTimer; // Reset Timer when Fireball is cast
         attackMode = true; // To check if the Enemy can still attack or not
+        cooling = true; // Start the Timer to Cooldown
 
         //animator.SetBool("canWalk", false);
         animator.SetTrigger("Attack");
@@ -149,20 +162,7 @@ public class Enemy : MonoBehaviour
     {
         cooling = false;
         attackMode = false;
-        //animator.SetBool("Attack", false);
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision == triggerArea)
-        {
-            if (collision.gameObject.tag == "Player")
-            {
-                Debug.Log("Player entrou no Trigger do meu Collider específico!");
-                target = collision.gameObject;
-                inRange = true;
-            }
-        }
+        animator.ResetTrigger("Attack");
     }
 
     void Cooldown()
