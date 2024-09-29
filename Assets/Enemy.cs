@@ -9,6 +9,8 @@ public class Enemy : MonoBehaviour
     public Animator animator;
     public Transform groundCheckPosition;
     public Transform rayCast;
+    public Transform pointA;
+    public Transform pointB;
     public LayerMask raycastMask;
     public LayerMask jumpableLayers;  // layers sobre os quais o personagem pode saltar
     public float rayCastLength;
@@ -58,17 +60,15 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         bool isTouchingPlayer = triggerArea.IsTouchingLayers(LayerMask.GetMask("Player"));
 
         if (isTouchingPlayer)
         {
-            Debug.Log("Player entrou no Trigger do meu Collider!");
             target = GameObject.Find("Player");
             inRange = true;
         }
-
 
         if (inRange)
         {
@@ -88,13 +88,51 @@ public class Enemy : MonoBehaviour
 
         if (!inRange)
         {
-            // animator.SetBool("isWalking", false);
+            rb.velocity = new Vector2(0, rb.velocity.y);
+            //MoveBetweenPointAAndPointB();
             StopAttack();
         }
 
+        //if (Mathf.Abs(rb.velocity.x) > 0.0001)
+        //{
+        //    animator.SetFloat("speed", moveSpeed);
+        //}
+        //else
+        //{
+        //    animator.SetFloat("speed", 0);
+        //}
+
+        //animator.SetFloat("speed", Mathf.Abs(rb.velocity.x * moveSpeed / Time.deltaTime));
         animator.SetFloat("speed", Mathf.Abs(rb.velocity.x));
 
         animator.SetBool("isJumping", !isGrounded()); 
+    }
+
+    void MoveBetweenPointAAndPointB()
+    {
+        Debug.Log("Ta entrando aqui");
+        Transform leftPoint = pointA.position.x < pointB.position.x ? pointA : pointB;
+        Transform rightPoint = pointA.position.x >= pointB.position.x ? pointA : pointB;
+
+        // A direita do rightPoint
+        if (transform.position.x > rightPoint.position.x)
+        {
+            rb.velocity = new Vector2(-moveSpeed, rb.velocity.y);
+
+            if (facingRight)
+            {
+                Flip();
+            }
+        } // A esquerda do leftPoint
+        else if (transform.position.x < leftPoint.position.x && !facingRight)
+        {
+            rb.velocity = new Vector2(moveSpeed, rb.velocity.y);
+
+            if (!facingRight)
+            {
+                Flip();
+            }
+        }
     }
 
     void EnemyLogic()
@@ -109,7 +147,6 @@ public class Enemy : MonoBehaviour
         else if (attackDistance >= distance && cooling == false)
         {
             Attack();
-            rb.velocity = new Vector2(0f, 0f);
         }
 
         if (cooling)
@@ -130,6 +167,9 @@ public class Enemy : MonoBehaviour
             rb.velocity = new Vector2((targetPosition.x - transform.position.x) > 0 ? moveSpeed : -moveSpeed, rb.velocity.y);
 
             //transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+
+            //Vector2 newPosition = Vector2.MoveTowards(rb.position, targetPosition, moveSpeed * Time.fixedDeltaTime);
+            //rb.MovePosition(newPosition);
         }
 
         if (transform.position.x > target.transform.position.x && facingRight)
