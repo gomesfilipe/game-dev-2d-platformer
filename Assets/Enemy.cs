@@ -28,11 +28,9 @@ public class Enemy : MonoBehaviour
     bool facingRight = true;
 
     private RaycastHit2D hit;
-    private GameObject target;
+    private Transform target;
     private float distance; // Distance between enemy and player
     private float intTimer;
-    private float directionChangeTimer = 0f; // The time at which the last direction change has occurred at patrol
-    private float directionChangeTheshold = 0.5f; // The threshold at which the direction change occurs at patrol
     private bool attackMode;
     private bool inRange; // Check if Player is in range
     private bool cooling;
@@ -55,7 +53,8 @@ public class Enemy : MonoBehaviour
 
     void Awake()
     {
-        intTimer = timer;    
+        SelectTarget();
+        intTimer = timer;   
     }
 
     void Start()
@@ -72,8 +71,19 @@ public class Enemy : MonoBehaviour
 
         if (isTouchingPlayer)
         {
-            target = GameObject.Find("Player");
+            target = GameObject.Find("Player").transform;
             inRange = true;
+            //Flip();
+        }
+
+        if (!attackMode)
+        {
+            Move();
+        }
+
+        if (!InsideOfLimits() && !inRange && !animator.GetCurrentAnimatorStateInfo(0).IsName(enemyAttackAnimationName))
+        {
+            SelectTarget();
         }
 
         if (inRange)
@@ -95,7 +105,7 @@ public class Enemy : MonoBehaviour
         if (!inRange)
         {
             //rb.velocity = new Vector2(0, rb.velocity.y);
-            MoveBetweenPointAAndPointB();
+            //MoveBetweenPointAAndPointB();
             StopAttack();
         }
 
@@ -114,50 +124,12 @@ public class Enemy : MonoBehaviour
         animator.SetBool("isJumping", !isGrounded()); 
     }
 
-    void MoveBetweenPointAAndPointB()
-    {
-        directionChangeTimer -= Time.deltaTime;
-
-        if (Mathf.Abs(transform.position.x - targetPositionPatrol.x) < 0.01 && directionChangeTimer < directionChangeTheshold)
-        {
-            Debug.Log("Trocou de direcao " + directionChangeTimer);
-
-            directionChangeTimer = directionChangeTheshold + 1f;
-            //targetPositionPatrol = targetPositionPatrol == new Vector2(pointA.position.x, pointA.position.y) ? pointB.position : pointA.position;
-            targetPositionPatrol = Vector2.Distance(transform.position, pointA.position) < Vector2.Distance(transform.position, pointB.position) ? pointB.position : pointA.position;
-        }
-
-        float desirable_speed;
-
-        // Se move pra esquerda
-        if (transform.position.x > targetPositionPatrol.x)
-        {
-            desirable_speed = -moveSpeed;
-            if (facingRight)
-            {
-                Flip();
-            }
-        }
-        // Se move pra direita
-        else
-        {
-            desirable_speed = moveSpeed;
-            if (!facingRight)
-            {
-                Flip();
-            }
-        }
-
-        rb.velocity = new Vector2(desirable_speed, rb.velocity.y);
-    }
-
     void EnemyLogic()
     {
-        distance = Vector2.Distance(transform.position, target.transform.position);
+        distance = Vector2.Distance(transform.position, target.position);
 
         if (distance > attackDistance)
         {
-            Move();
             StopAttack();
         }
         else if (attackDistance >= distance && cooling == false)
@@ -174,25 +146,18 @@ public class Enemy : MonoBehaviour
 
     void Move()
     {
-        //animator.SetBool("canWalk", true);
-
         if (!animator.GetCurrentAnimatorStateInfo(0).IsName(enemyAttackAnimationName))
         {
-            Vector2 targetPosition = new Vector2(target.transform.position.x, transform.position.y);
+            Vector2 targetPosition = new Vector2(target.position.x, transform.position.y);
 
             rb.velocity = new Vector2((targetPosition.x - transform.position.x) > 0 ? moveSpeed : -moveSpeed, rb.velocity.y);
-
-            //transform.position = Vector2.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-
-            //Vector2 newPosition = Vector2.MoveTowards(rb.position, targetPosition, moveSpeed * Time.fixedDeltaTime);
-            //rb.MovePosition(newPosition);
         }
 
-        if (transform.position.x > target.transform.position.x && facingRight)
+        if (transform.position.x > target.position.x && facingRight)
         {
             Flip();
         }
-        else if (transform.position.x < target.transform.position.x && !facingRight)
+        else if (transform.position.x < target.position.x && !facingRight)
         {
             Flip();
         }
@@ -279,5 +244,33 @@ public class Enemy : MonoBehaviour
     public void TriggerCooling()
     {
         cooling = true;
+    }
+
+    private bool InsideOfLimits()
+    {
+        Transform rightPoint = pointA.position.x > pointB.position.x ? pointA : pointB;
+        Transform leftPoint = pointA.position.x > pointB.position.x ? pointB : pointA;
+
+        return transform.position.x > leftPoint.position.x && transform.position.x < rightPoint.position.x;
+    }
+
+    private void SelectTarget()
+    {
+        Transform rightPoint = pointA.position.x > pointB.position.x ? pointA : pointB;
+        Transform leftPoint = pointA.position.x > pointB.position.x ? pointB : pointA;
+
+        float distanceToLeft = Vector2.Distance(transform.position, leftPoint.position);
+        float distanceToRight = Vector2.Distance(transform.position, rightPoint.position);
+
+        if (distanceToLeft > distanceToRight)
+        {
+            target = leftPoint;
+        }
+        else
+        {
+            target = rightPoint;
+        }
+
+        Flip();
     }
 }
