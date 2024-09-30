@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     public Transform groundCheckPosition;  // posicao do obj usado para ground check
     public Transform attackPoint;
     public Transform itemCollectPoint;
+    public Transform respawnPoint;
     public float attackRange = 0.5f;
     public float itemCollectRange = 0.5f;
 
@@ -189,6 +190,14 @@ public class PlayerController : MonoBehaviour
     {
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            transform.position = respawnPoint.position;
+
+            currentHealth = maxHealth;
+            healthBar.SetHealth(currentHealth);
+        }
     }
 }
 
