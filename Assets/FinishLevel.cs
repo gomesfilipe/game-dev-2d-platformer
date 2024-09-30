@@ -21,7 +21,7 @@ public class FinishLevel : MonoBehaviour
         if (isTouchingPlayer)
         {
             Debug.Log("Player reached the end of the level!");
-            SceneManager.LoadScene("Level2");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }

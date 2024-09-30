@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     public Transform attackPoint;
     public Transform itemCollectPoint;
     public Transform respawnPoint;
+    public Transform diePoint;
     public float attackRange = 0.5f;
     public float itemCollectRange = 0.5f;
 
@@ -95,6 +96,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (transform.position.y <= diePoint.position.y)
+        {
+            TakeDamage(999999999);
+        }
+
+
         float vx = Input.GetAxisRaw("Horizontal") * MOVEMENT_SPEED;
         
         float vy = (rb.IsTouchingLayers(propulsionLayers) && (collectedItems >= itemsToCollect))
