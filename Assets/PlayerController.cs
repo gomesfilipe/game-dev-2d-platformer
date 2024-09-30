@@ -180,11 +180,12 @@ public class PlayerController : MonoBehaviour
 
         foreach (Collider2D enemy in hitEnemies)
         {
+            Debug.Log("We hit " + enemy.name);
             enemy.GetComponent<Enemy>().TakeDamage(1);
         }
     }
 
-    public void TakeDamege(int damage)
+    public void TakeDamage(int damage)
     {
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);

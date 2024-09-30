@@ -11,8 +11,10 @@ public class Enemy : MonoBehaviour
     public Transform rayCast;
     public Transform pointA;
     public Transform pointB;
+    public Transform attackPoint;
     public LayerMask raycastMask;
     public LayerMask jumpableLayers;  // layers sobre os quais o personagem pode saltar
+    public LayerMask playerMask;
     public float rayCastLength;
     public float attackDistance; // Minimum distance for attack
     public float moveSpeed;
@@ -23,6 +25,7 @@ public class Enemy : MonoBehaviour
     public float health = 10f;
 
     public int deathDelay = 3;
+    public int attackDamage = 1;
 
     float GROUND_CHECK_RADIUS = .1f;
     bool facingRight = true;
@@ -177,6 +180,17 @@ public class Enemy : MonoBehaviour
 
         //animator.SetBool("canWalk", false);
         animator.SetTrigger("Attack");
+
+        Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(
+            attackPoint.position,
+            attackDistance,
+            playerMask);
+
+        foreach (Collider2D player in hitPlayer)
+        {
+            Debug.Log("We hit " + player.name);
+            player.GetComponent<PlayerController>().TakeDamage(attackDamage);
+        }
     }
 
     void StopAttack()

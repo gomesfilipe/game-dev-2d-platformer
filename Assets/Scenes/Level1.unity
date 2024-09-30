@@ -321,12 +321,16 @@ MonoBehaviour:
   rayCast: {fileID: 1378103166}
   pointA: {fileID: 1431044252}
   pointB: {fileID: 362555363}
+  attackPoint: {fileID: 792376860}
   raycastMask:
     serializedVersion: 2
     m_Bits: 128
   jumpableLayers:
     serializedVersion: 2
     m_Bits: 5632
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 128
   rayCastLength: 6
   attackDistance: 1.5
   moveSpeed: 2
@@ -334,6 +338,7 @@ MonoBehaviour:
   enemyAttackAnimationName: Bear_Attack
   health: 10
   deathDelay: 1
+  attackDamage: 1
 --- !u!61 &228551656
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -994,7 +999,7 @@ MonoBehaviour:
   propulsionDelay: 1
   projectilePrefab: {fileID: 371806660812642849, guid: e18bc07b6a4dde940b261e1b38532675, type: 3}
   laserPrefab: {fileID: 2242792887891152183, guid: 58944ba8a9975a8479e938efe308c6e4, type: 3}
-  maxHealth: 100
+  maxHealth: 5
   currentHealth: 0
   healthBar: {fileID: 1206135597}
 --- !u!61 &799537228
@@ -2826,7 +2831,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1233175547}
   - component: {fileID: 1233175548}
-  m_Layer: 6
+  m_Layer: 14
   m_Name: triggerArea
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
